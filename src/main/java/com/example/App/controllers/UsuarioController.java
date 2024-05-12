@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/usuario/")
+@RequestMapping("/api/usuario/")
 public class UsuarioController {
-    
+
     @Autowired
     private UsuarioService usuarioService;
 
@@ -36,7 +36,8 @@ public class UsuarioController {
     @Autowired
     private DepartamentoService departamentoService; // Inyectar DepartamentoService
 
-    @PostMapping
+
+    @PostMapping("/guardar")
     private ResponseEntity<Usuario> guardar (@RequestBody Usuario usuario){
         // Obtener el departamento por su ID
         Optional<Departamento> departamentoOptional = departamentoService.obtenerDepartamentoPorCodigo(usuario.getDepartamento().getId_Departamento());
@@ -59,8 +60,16 @@ public class UsuarioController {
         }
     }
 
-    
-    @GetMapping
+    /**
+     * This is a Spring Boot controller method mapped to the HTTP GET request.
+     * It is used to fetch all the users from the database.
+     *
+     * @return ResponseEntity<List<Usuario>> - This method returns a ResponseEntity object that contains a list of all Usuario entities.
+     * The ResponseEntity is a type of object that includes HTTP Response Body, HTTP Status Code, and HTTP Headers.
+     * If the operation is successful, it returns the list of Usuario entities with an HTTP status code of 200 (OK).
+     * If there are no Usuario entities in the database, it returns an empty list with an HTTP status code of 200 (OK).
+     */
+    @GetMapping("/all")
     private ResponseEntity<List<Usuario>> listartodoslosusuarios (){
         return ResponseEntity.ok(usuarioService.getAllUsuarios());
     }
