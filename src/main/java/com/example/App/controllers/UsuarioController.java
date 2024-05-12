@@ -38,7 +38,11 @@ public class UsuarioController {
 
     @PostMapping("/guardar")
     private ResponseEntity<Usuario> guardar (@RequestBody Usuario usuario){
-        System.out.println(usuario.toString());
+        if(usuario.getNombre() == null || usuario.getNombre().isEmpty() || usuario.getApellido() == null || usuario.getApellido().isEmpty() || usuario.getEmail() == null || usuario.getEmail().isEmpty() || usuario.getPassword() == null || usuario.getPassword().isEmpty() || usuario.getDepartamento() == null || usuario.getRolUsuario() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } else if (usuarioService.findByUserName(usuario.getNombre()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.FOUND).build();
+        }
         // Obtener el departamento por su ID
         Optional<Departamento> departamentoOptional = departamentoService.obtenerDepartamentoPorCodigo(usuario.getDepartamento().getId());
         // Obtener el rol por su ID
@@ -60,15 +64,7 @@ public class UsuarioController {
         }
     }
 
-    /**
-     * This is a Spring Boot controller method mapped to the HTTP GET request.
-     * It is used to fetch all the users from the database.
-     *
-     * @return ResponseEntity<List<Usuario>> - This method returns a ResponseEntity object that contains a list of all Usuario entities.
-     * The ResponseEntity is a type of object that includes HTTP Response Body, HTTP Status Code, and HTTP Headers.
-     * If the operation is successful, it returns the list of Usuario entities with an HTTP status code of 200 (OK).
-     * If there are no Usuario entities in the database, it returns an empty list with an HTTP status code of 200 (OK).
-     */
+
     @GetMapping("/all")
     private ResponseEntity<List<Usuario>> listartodoslosusuarios (){
         return ResponseEntity.ok(usuarioService.getAllUsuarios());
@@ -91,7 +87,7 @@ public class UsuarioController {
         Usuario usuarioActualizado = usuarioService.actualizarUsuario(id, usuario);
         return new ResponseEntity<>(usuarioActualizado, HttpStatus.OK);
     }
-    
-    
+
+
 
 }
