@@ -26,21 +26,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/usuario/")
 public class UsuarioController {
-
     @Autowired
     private UsuarioService usuarioService;
 
     @Autowired
-    private RolService rolService; // Inyectar RolService
+    private RolService rolService;
 
     @Autowired
-    private DepartamentoService departamentoService; // Inyectar DepartamentoService
+    private DepartamentoService departamentoService;
 
 
     @PostMapping("/guardar")
     private ResponseEntity<Usuario> guardar (@RequestBody Usuario usuario){
+        System.out.println(usuario.toString());
         // Obtener el departamento por su ID
-        Optional<Departamento> departamentoOptional = departamentoService.obtenerDepartamentoPorCodigo(usuario.getDepartamento().getId_Departamento());
+        Optional<Departamento> departamentoOptional = departamentoService.obtenerDepartamentoPorCodigo(usuario.getDepartamento().getId());
         // Obtener el rol por su ID
         Optional<Rol> rolOptional = rolService.obtenerRolPorId(usuario.getRolUsuario().getId_rol());
 
@@ -80,7 +80,7 @@ public class UsuarioController {
         return ResponseEntity.ok().build();
 }
     
-    @GetMapping (value="{Id_Usuario}")
+    @GetMapping (value="/{Id_Usuario}")
     private ResponseEntity<Optional<Usuario>> listarporId (@PathVariable ("Id_Usuario") long Id_Usuario){
         return ResponseEntity.ok(usuarioService.findByid_Usuario(Id_Usuario)); 
         

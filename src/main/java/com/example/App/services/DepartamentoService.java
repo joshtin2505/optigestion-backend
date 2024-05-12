@@ -45,7 +45,7 @@ public class DepartamentoService {
     
     // Metodo para actualizar un cliente existente
     public Departamento actualizarDepartamento(Long id_Departamento, Departamento departamento) {
-        departamento.setId_Departamento(id_Departamento); // Asegurar que el codigo del cliente coincida con el proporcionado
+        departamento.setId( id_Departamento); // Asegurar que el codigo del cliente coincida con el proporcionado
         return departamentoRepository.save(departamento);
     }
     public void deleteByCodigo(Long id_Departamento) {

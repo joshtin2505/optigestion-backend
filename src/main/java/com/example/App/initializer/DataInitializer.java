@@ -24,10 +24,18 @@ public class DataInitializer implements CommandLineRunner {
         Rol rol4 = new Rol(3, "operativo", "Rol con permisos de opertaivo");
 
         // Guardar los roles
-        rolService.guardarRol(rol1);
-        rolService.guardarRol(rol2);
-        rolService.guardarRol(rol3);
-        rolService.guardarRol(rol4);
+        if (rolService.existsById(rol1.getId_rol())) {
+            rolService.guardarRol(rol1);
+        }
+        if (rolService.existsById(rol2.getId_rol())) {
+            rolService.guardarRol(rol2);
+        }
+        if (rolService.existsById(rol3.getId_rol())) {
+            rolService.guardarRol(rol3);
+        }
+        if (rolService.existsById(rol4.getId_rol())) {
+            rolService.guardarRol(rol4);
+        }
     }
 }
 

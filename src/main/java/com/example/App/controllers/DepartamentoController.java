@@ -54,7 +54,7 @@ public class DepartamentoController {
         Departamento temporal = departamentoService.create(departamento);
         
         try {
-            return ResponseEntity.created(new URI("api/departamento/" + temporal.getId_Departamento())).body(temporal);
+            return ResponseEntity.created(new URI("api/departamento/" + temporal.getId())).body(temporal);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

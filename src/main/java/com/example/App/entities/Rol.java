@@ -16,4 +16,7 @@ public class Rol {
     private int id_rol;
     private String rol;
     private String descripcion;
+    public Rol(int id) {
+        this.id_rol = id;
+    }
 }

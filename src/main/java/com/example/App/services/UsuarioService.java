@@ -36,5 +36,9 @@ public class UsuarioService {
     public Optional<Usuario> findByUserName(String user_name) {
         return usuarioRepository.findByUserName(user_name);
     }
+
+    public boolean existsById(Long id_Usuario) {
+        return usuarioRepository.existsById(id_Usuario);
+    }
 }
 

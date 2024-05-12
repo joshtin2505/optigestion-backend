@@ -44,7 +44,9 @@ public class RolService {
         rol.setId_rol(id); // Asegurar que el ID del rol coincida con el proporcionado
         return rolRepository.save(rol);
     }
-
+    public boolean existsById(int id) {
+        return !rolRepository.existsById(id);
+    }
     // Método para eliminar un rol por su ID
     public void eliminarRolPorId(int id) {
         rolRepository.deleteById(id);
