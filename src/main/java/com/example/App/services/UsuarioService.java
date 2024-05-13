@@ -2,6 +2,8 @@ package com.example.App.services;
 
 import com.example.App.entities.Usuario;
 import com.example.App.repositories.UsuarioRepository;
+import com.example.App.response.DeleteResult;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +27,17 @@ public class UsuarioService {
         return usuarioRepository.findById(id_Usuario);
     }
 
-    public void deleteById(Long id) {
-        usuarioRepository.deleteById(id);
+    public DeleteResult deleteById(Long id) {
+        DeleteResult result = new DeleteResult();
+        try {
+            usuarioRepository.deleteById(id);
+            result.setSuccess(true);
+            result.setMessage("Usuario eliminado correctamente");
+        } catch (Exception e) {
+            result.setSuccess(false);
+            result.setMessage("Error al eliminar usuario: " + e.getMessage());
+        }
+        return result;
     }
     // Metodo para actualizar un cliente existente
     public Usuario actualizarUsuario(Long id, Usuario usuario) {

@@ -3,6 +3,7 @@ package com.example.App.controllers;
 import com.example.App.entities.Departamento;
 import com.example.App.entities.Rol;
 import com.example.App.entities.Usuario;
+import com.example.App.response.DeleteResult;
 import com.example.App.services.DepartamentoService;
 import com.example.App.services.RolService;
 import com.example.App.services.UsuarioService;
@@ -71,9 +72,9 @@ public class UsuarioController {
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarsusuario(@PathVariable Long id) {
-        usuarioService.deleteById(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<DeleteResult> eliminarsusuario(@PathVariable Long id) {
+        DeleteResult res = usuarioService.deleteById(id);
+        return ResponseEntity.ok().body(res);
 }
     
     @GetMapping (value="/{Id_Usuario}")
