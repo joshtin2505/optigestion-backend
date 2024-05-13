@@ -3,6 +3,7 @@ package com.example.App.services;
 import com.example.App.entities.Usuario;
 import com.example.App.repositories.UsuarioRepository;
 import com.example.App.response.DeleteResult;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -44,8 +45,11 @@ public class UsuarioService {
         usuario.setId_Usuario(id); // Asegurar que el id del usuario coincida con el proporcionado
         return usuarioRepository.save(usuario);
     }
-    public Optional<Usuario> findByUserName(String username) {
-        return usuarioRepository.findByUserName(username);
+    public Optional<Usuario> findByUsername(String username) {
+        if (StringUtils.isBlank(username)) {
+            throw new IllegalArgumentException("El nombre de usuario no es válido");
+        }
+        return usuarioRepository.findByUsername(username);
     }
 
     public boolean existsById(Long id_Usuario) {

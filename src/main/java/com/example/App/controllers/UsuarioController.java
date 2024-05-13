@@ -41,7 +41,7 @@ public class UsuarioController {
     private ResponseEntity<Usuario> guardar (@RequestBody Usuario usuario){
         if(usuario.getNombre() == null || usuario.getNombre().isEmpty() || usuario.getApellido() == null || usuario.getApellido().isEmpty() || usuario.getEmail() == null || usuario.getEmail().isEmpty() || usuario.getPassword() == null || usuario.getPassword().isEmpty() || usuario.getDepartamento() == null || usuario.getRolUsuario() == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        } else if (usuarioService.findByUserName(usuario.getNombre()).isPresent()) {
+        } else if (usuarioService.findByUsername(usuario.getNombre()).isPresent()) {
             return ResponseEntity.status(HttpStatus.FOUND).build();
         }
         // Obtener el departamento por su ID
@@ -89,14 +89,13 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioActualizado, HttpStatus.OK);
     }
 
-    @GetMapping("username/")
-    public ResponseEntity<Usuario> getUsuarioByUserName(@RequestParam("username") String name){
-        System.out.println("Username: " + name);
-        Optional<Usuario> usuarioOptional = usuarioService.findByUserName(name);
+    @GetMapping("username/{username}")
+    public ResponseEntity<Usuario> getUsuarioByUsername(@PathVariable("username") String username) {
+        Optional<Usuario> usuarioOptional = usuarioService.findByUsername(username);
         if (usuarioOptional.isPresent()) {
-           return ResponseEntity.ok(usuarioOptional.get());
+            return ResponseEntity.ok(usuarioOptional.get());
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(null);
         }
     }
 

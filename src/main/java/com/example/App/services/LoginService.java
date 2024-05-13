@@ -19,7 +19,7 @@ public class LoginService {
     private UsuarioService usuarioService;
 
     public boolean authenticate(String username, String password) {
-        Optional<Usuario> userOptional = usuarioService.findByUserName(username);
+        Optional<Usuario> userOptional = usuarioService.findByUsername(username);
         
         if (userOptional.isPresent()) {
             Usuario usuario = userOptional.get();

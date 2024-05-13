@@ -26,8 +26,8 @@ public class Usuario {
     private String trabajo;
     @Column(unique = true, length = 150) //Los valores en esta columna deben ser unicosen toda la tabla
     private String email;
-    @Column(unique = true, length = 13)//Los valores en esta columna deben ser unicosen toda la tabla
-    private String userName;
+    @Column(unique = true, length = 13, name = "userName")//Los valores en esta columna deben ser unicosen toda la tabla
+    private String username;
     private String password;
 
     @ManyToOne
