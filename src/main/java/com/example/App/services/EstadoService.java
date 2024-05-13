@@ -49,4 +49,8 @@ public class EstadoService {
     public void eliminarEstadoPorId(int id_estado) {
         estadoRepository.deleteById(id_estado);
     }
+
+    public boolean existsById(int id_estado){
+        return !estadoRepository.existsById(id_estado);
+    }
 }
