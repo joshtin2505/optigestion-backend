@@ -89,6 +89,15 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioActualizado, HttpStatus.OK);
     }
 
-
+    @GetMapping("username/")
+    public ResponseEntity<Usuario> getUsuarioByUserName(@RequestParam("username") String name){
+        System.out.println("Username: " + name);
+        Optional<Usuario> usuarioOptional = usuarioService.findByUserName(name);
+        if (usuarioOptional.isPresent()) {
+           return ResponseEntity.ok(usuarioOptional.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }

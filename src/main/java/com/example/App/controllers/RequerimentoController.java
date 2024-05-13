@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.example.App.controllers;
 
 import com.example.App.entities.Estado;
@@ -23,10 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- * @author PC
- */
 @RestController
 @RequestMapping("/api/requerimentos")
 public class RequerimentoController {
@@ -89,4 +81,5 @@ public class RequerimentoController {
         requerimentoService.eliminarRequerimentoPorId(id);
         return ResponseEntity.ok().build();
     }
+
 }

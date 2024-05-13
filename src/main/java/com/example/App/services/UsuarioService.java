@@ -44,12 +44,13 @@ public class UsuarioService {
         usuario.setId_Usuario(id); // Asegurar que el id del usuario coincida con el proporcionado
         return usuarioRepository.save(usuario);
     }
-    public Optional<Usuario> findByUserName(String user_name) {
-        return usuarioRepository.findByUserName(user_name);
+    public Optional<Usuario> findByUserName(String username) {
+        return usuarioRepository.findByUserName(username);
     }
 
     public boolean existsById(Long id_Usuario) {
         return usuarioRepository.existsById(id_Usuario);
     }
+
 }
 
