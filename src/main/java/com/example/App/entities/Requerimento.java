@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,6 +22,8 @@ public class Requerimento {
     @ManyToOne
     @JoinColumn(name = "id_estado")
     private Estado estado;
+    @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime fecha_creacion;
     private String comentaio_rector;
     private String comentario_logistico;
