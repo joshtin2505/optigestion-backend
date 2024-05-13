@@ -4,6 +4,7 @@
  */
 package com.example.App.services;
 
+import com.example.App.entities.Estado;
 import com.example.App.entities.Requerimento;
 import com.example.App.repositories.RequerimentoRepository;
 import java.util.List;
@@ -18,10 +19,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class RequerimentoService {
     private final RequerimentoRepository requerimentoRepository;
+    private final EstadoService estadoService;
 
     @Autowired
-    public RequerimentoService(RequerimentoRepository requerimentoRepository) {
+    public RequerimentoService(RequerimentoRepository requerimentoRepository, EstadoService estadoService) {
         this.requerimentoRepository = requerimentoRepository;
+        this.estadoService = estadoService;
     }
 
     // Método para obtener todos los requerimientos
@@ -40,9 +43,43 @@ public class RequerimentoService {
     }
 
     // Método para actualizar un requerimiento existente
-    public Requerimento actualizarRequerimento(Long id, Requerimento requerimento) {
-        requerimento.setId_requerimeinto(id); // Asegurar que el ID del requerimiento coincida con el proporcionado
-        return requerimentoRepository.save(requerimento);
+    public Requerimento actualizarRequerimento(Long id, Requerimento requerimentoActualizado) {
+
+        Optional<Requerimento> requerimentoExistente = requerimentoRepository.findById(id);
+
+        if (requerimentoActualizado.getOpcion_elegida() != 0) { // to fix
+            requerimentoExistente.get().setOpcion_elegida(requerimentoActualizado.getOpcion_elegida());
+        }
+
+        if (requerimentoActualizado.getComentaio_rector() != null) {
+            requerimentoExistente.get().setComentaio_rector(requerimentoActualizado.getComentaio_rector());
+        }
+
+        if (requerimentoActualizado.getComentario_compra() != null) {
+            requerimentoExistente.get().setComentario_compra(requerimentoActualizado.getComentario_compra());
+        }
+
+        if (requerimentoActualizado.getComentario_logistico() != null) {
+            requerimentoExistente.get().setComentario_logistico(requerimentoActualizado.getComentario_logistico());
+        }
+
+        if (requerimentoActualizado.getDescripcion() != null) {
+            requerimentoExistente.get().setDescripcion(requerimentoActualizado.getDescripcion());
+        }
+
+        if (requerimentoActualizado.getEstado() != null) {
+            Optional<Estado> estadoOptional = estadoService.obtenerEstadoPorId(requerimentoActualizado.getEstado().getId());
+            if (estadoOptional.isPresent()) {
+                requerimentoExistente.get().setEstado(estadoOptional.get());
+            }
+        }
+
+        if (requerimentoActualizado.getTitulo() != null) {
+            requerimentoExistente.get().setTitulo(requerimentoActualizado.getTitulo());
+        }
+
+
+        return requerimentoRepository.save(requerimentoExistente.get());
     }
 
     // Método para eliminar un requerimiento por su ID
