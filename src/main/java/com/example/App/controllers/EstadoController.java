@@ -43,7 +43,7 @@ public class EstadoController {
 
     // Endpoint para obtener un estado por su ID
     @GetMapping("/{id_estado}")
-    private ResponseEntity<Estado> obtenerEstadoPorId(@PathVariable int id_estado) {
+    private ResponseEntity<Estado> obtenerEstadoPorId(@PathVariable Long id_estado) {
         return estadoService.obtenerEstadoPorId(id_estado)
                 .map(estado -> new ResponseEntity<>(estado, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -55,7 +55,7 @@ public class EstadoController {
         Estado nuevoEstado = estadoService.guardarEstado(estado);
         
         try {
-            return ResponseEntity.created(new URI("/api/estados/" + nuevoEstado.getId_estado())).body(nuevoEstado);
+            return ResponseEntity.created(new URI("/api/estados/" + nuevoEstado.getId())).body(nuevoEstado);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -63,14 +63,14 @@ public class EstadoController {
 
     // Endpoint para actualizar un estado existente
     @PutMapping("/{id_estado}")
-    private ResponseEntity<Estado> actualizarEstado(@PathVariable int id_estado, @RequestBody Estado estado) {
+    private ResponseEntity<Estado> actualizarEstado(@PathVariable Long id_estado, @RequestBody Estado estado) {
         Estado estadoActualizado = estadoService.actualizarEstado(id_estado, estado);
         return new ResponseEntity<>(estadoActualizado, HttpStatus.OK);
     }
 
     // Endpoint para eliminar un estado por su ID
     @DeleteMapping("/{id_estado}")
-    public ResponseEntity<Void> eliminarEstadoPorId(@PathVariable int id_estado) {
+    public ResponseEntity<Void> eliminarEstadoPorId(@PathVariable Long id_estado) {
         estadoService.eliminarEstadoPorId(id_estado);
         return ResponseEntity.ok().build();
     }

@@ -11,6 +11,6 @@ import com.example.App.entities.Requerimento;
  *
  * @author Daniel BC 2
  */
-public interface RequerimentoRepository extends JpaRepository<Requerimento , Integer> {
+public interface RequerimentoRepository extends JpaRepository<Requerimento , Long> {
    
 }

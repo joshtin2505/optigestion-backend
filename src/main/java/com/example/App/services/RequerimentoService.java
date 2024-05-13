@@ -30,7 +30,7 @@ public class RequerimentoService {
     }
 
     // Método para obtener un requerimiento por su ID
-    public Optional<Requerimento> obtenerRequerimentoPorId(int id) {
+    public Optional<Requerimento> obtenerRequerimentoPorId(Long id) {
         return requerimentoRepository.findById(id);
     }
     
@@ -40,13 +40,13 @@ public class RequerimentoService {
     }
 
     // Método para actualizar un requerimiento existente
-    public Requerimento actualizarRequerimento(int id, Requerimento requerimento) {
+    public Requerimento actualizarRequerimento(Long id, Requerimento requerimento) {
         requerimento.setId_requerimeinto(id); // Asegurar que el ID del requerimiento coincida con el proporcionado
         return requerimentoRepository.save(requerimento);
     }
 
     // Método para eliminar un requerimiento por su ID
-    public void eliminarRequerimentoPorId(int id) {
+    public void eliminarRequerimentoPorId(Long id) {
         requerimentoRepository.deleteById(id);
     }
 }

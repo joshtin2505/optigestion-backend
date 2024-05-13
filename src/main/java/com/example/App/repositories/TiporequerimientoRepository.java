@@ -4,13 +4,13 @@
  */
 package com.example.App.repositories;
 
-import com.example.App.entities.Tipo_requerimiento;
+import com.example.App.entities.TipoRequerimiento;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author Daniel BC 2
  */
-public interface TiporequerimientoRepository extends JpaRepository<Tipo_requerimiento, Integer> {
+public interface TiporequerimientoRepository extends JpaRepository<TipoRequerimiento, Long> {
    
 }

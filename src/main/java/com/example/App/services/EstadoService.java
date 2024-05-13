@@ -30,7 +30,7 @@ public class EstadoService {
     }
 
     // Método para buscar un estado por su ID
-    public Optional<Estado> obtenerEstadoPorId(int id_estado) {
+    public Optional<Estado> obtenerEstadoPorId(Long id_estado) {
         return estadoRepository.findById(id_estado);
     }
     
@@ -40,17 +40,17 @@ public class EstadoService {
     }
 
     // Método para actualizar un estado existente
-    public Estado actualizarEstado(int id_estado, Estado estado) {
-        estado.setId_estado(id_estado); // Asegurar que el ID del estado coincida con el proporcionado
+    public Estado actualizarEstado(Long id_estado, Estado estado) {
+        estado.setId(id_estado); // Asegurar que el ID del estado coincida con el proporcionado
         return estadoRepository.save(estado);
     }
 
     // Método para eliminar un estado por su ID
-    public void eliminarEstadoPorId(int id_estado) {
+    public void eliminarEstadoPorId(Long id_estado) {
         estadoRepository.deleteById(id_estado);
     }
 
-    public boolean existsById(int id_estado){
+    public boolean existsById(Long id_estado){
         return !estadoRepository.existsById(id_estado);
     }
 }

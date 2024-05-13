@@ -1,5 +1,6 @@
 package com.example.App.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,11 @@ import lombok.NoArgsConstructor;
 @Data
 public class Estado {
     @Id
-    private int id_estado;
+    @Column(name = "id_estado")
+    private Long id;
     private String descripcion;
+
+    public Estado(int id) {
+        this.id = (long) id;
+    }
 }
