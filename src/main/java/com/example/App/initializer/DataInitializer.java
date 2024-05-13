@@ -1,6 +1,8 @@
 package com.example.App.initializer;
 
+import com.example.App.entities.Estado;
 import com.example.App.entities.Rol;
+import com.example.App.services.EstadoService;
 import com.example.App.services.RolService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 public class DataInitializer implements CommandLineRunner {
 
     private final RolService rolService;
+    private EstadoService estadoService;
 
     public DataInitializer(RolService rolService) {
         this.rolService = rolService;
@@ -24,17 +27,40 @@ public class DataInitializer implements CommandLineRunner {
         Rol rol4 = new Rol(3, "operativo", "Rol con permisos de opertaivo");
 
         // Guardar los roles
-        if (rolService.existsById(rol1.getId_rol())) {
-            rolService.guardarRol(rol1);
+        existOrSaveRol(rol1);
+        existOrSaveRol(rol2);
+        existOrSaveRol(rol3);
+        existOrSaveRol(rol4);
+
+        // ------ReqStates------
+
+        Estado estado1 = new Estado(0, "papelera");
+        Estado estado2 = new Estado(1,"borrador");
+        Estado estado3 = new Estado(2, "archivado");
+        Estado estado4 = new Estado(3, "enviado");
+        Estado estado5 = new Estado(4, "aprobado");
+        Estado estado6 = new Estado(5, "rechazado");
+        Estado estado7 = new Estado(6, "cotizado");
+        Estado estado8 = new Estado(7, "para comprar");
+
+        existOrSaveEstado(estado1);
+        existOrSaveEstado(estado2);
+        existOrSaveEstado(estado3);
+        existOrSaveEstado(estado4);
+        existOrSaveEstado(estado5);
+        existOrSaveEstado(estado6);
+        existOrSaveEstado(estado7);
+        existOrSaveEstado(estado8);
+    }
+
+    public void existOrSaveRol(Rol rol){
+        if(rolService.existsById(rol.getId_rol())){
+            rolService.guardarRol(rol);
         }
-        if (rolService.existsById(rol2.getId_rol())) {
-            rolService.guardarRol(rol2);
-        }
-        if (rolService.existsById(rol3.getId_rol())) {
-            rolService.guardarRol(rol3);
-        }
-        if (rolService.existsById(rol4.getId_rol())) {
-            rolService.guardarRol(rol4);
+    }
+    public void existOrSaveEstado(Estado estado){
+        if(estadoService.existsById(estado.getId_estado())){
+            estadoService.guardarEstado(estado);
         }
     }
 }
