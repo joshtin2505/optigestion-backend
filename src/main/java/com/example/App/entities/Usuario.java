@@ -29,7 +29,8 @@ public class Usuario {
     @Column(unique = true, length = 13, name = "userName")//Los valores en esta columna deben ser unicosen toda la tabla
     private String username;
     private String password;
-
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private boolean activo;
     @ManyToOne
     @JoinColumn(name = "id_Departamento")
     private Departamento departamento;
