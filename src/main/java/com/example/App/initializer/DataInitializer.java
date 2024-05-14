@@ -3,9 +3,11 @@ package com.example.App.initializer;
 import com.example.App.entities.Estado;
 import com.example.App.entities.Rol;
 import com.example.App.entities.TipoRequerimiento;
+import com.example.App.entities.Usuario;
 import com.example.App.services.EstadoService;
 import com.example.App.services.RolService;
 import com.example.App.services.TipoRequerimientoService;
+import com.example.App.services.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,7 @@ public class DataInitializer implements CommandLineRunner {
     private final RolService rolService;
     private final EstadoService estadoService;
     private final TipoRequerimientoService tipoRequerimientoService;
+    private final UsuarioService usuarioService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -61,6 +64,12 @@ public class DataInitializer implements CommandLineRunner {
         existOrSaveTipoRequerimiento(tipoRequerimiento1);
         existOrSaveTipoRequerimiento(tipoRequerimiento2);
         existOrSaveTipoRequerimiento(tipoRequerimiento3);
+
+        // ------Usuarios------
+
+        // Usuario usuario1 = new Usuario(0L, "juan", "perez", "Adaministrador", "admin@admin.com", "admin", "admin", true, 1011, 0);
+        // Continuar con el initializer de usuarios y demas datos
+
     }
 
 
