@@ -51,5 +51,9 @@ public class DepartamentoService {
     public void deleteByCodigo(Long id_Departamento) {
         departamentoRepository.deleteById(id_Departamento);
     }
+
+    public boolean existsById (Long id_Departamento){
+        return !departamentoRepository.existsById(id_Departamento);
+    }
     
 }
