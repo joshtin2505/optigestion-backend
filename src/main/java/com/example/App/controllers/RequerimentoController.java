@@ -4,7 +4,6 @@ import com.example.App.entities.Estado;
 import com.example.App.entities.Requerimento;
 import com.example.App.entities.TipoRequerimiento;
 import com.example.App.entities.Usuario;
-import com.example.App.repositories.RequerimentoRepository;
 import com.example.App.services.EstadoService;
 import com.example.App.services.RequerimentoService;
 import java.net.URI;
@@ -32,15 +31,13 @@ public class RequerimentoController {
     private final EstadoService estadoService;
     private final UsuarioService usuarioService;
     private final TipoRequerimientoService tipoRequerimientoService;
-    private final RequerimentoRepository requerimentoRepository;
 
     @Autowired
-    public RequerimentoController(RequerimentoService requerimentoService, EstadoService estadoService, UsuarioService usuarioService, TipoRequerimientoService tipoRequerimientoService, RequerimentoRepository requerimentoRepository) {
+    public RequerimentoController(RequerimentoService requerimentoService, EstadoService estadoService, UsuarioService usuarioService, TipoRequerimientoService tipoRequerimientoService) {
         this.requerimentoService = requerimentoService;
         this.estadoService = estadoService;
         this.usuarioService = usuarioService;
         this.tipoRequerimientoService = tipoRequerimientoService;
-        this.requerimentoRepository = requerimentoRepository;
     }
 
     // Endpoint para obtener todos los requerimentos

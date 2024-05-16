@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Service
@@ -33,21 +34,32 @@ public class ArchivoService {
         return "FAILED";
     }
 
-    public String savePdf(String fileName, MultipartFile file){
-
-        try {
-            String fullPath = pathPdf+fileName;
-
-            File myObj = new File(fullPath);
-            if (myObj.createNewFile()) {
-                System.out.println("File created: " + myObj.getName());
-            } else {
-                System.out.println("File already exists.");
+    public String savePdf(/*String fileName,*/ MultipartFile file){
+        String NewName;
+            if (file.isEmpty()) {
+                return "File is empty";
             }
-            return fullPath;
+        try {
+            //String fullPath = pathPdf+fileName+".pdf";
+            //System.out.println(fullPath);
+            //File dir = new File(fullPath);
+
+            byte[] bytes = file.getBytes();
+
+            Path path = Paths.get(pathPdf +File.pathSeparator+ file.getOriginalFilename() );
+            Files.write(path, bytes);
+
+            return "Archivo subido exitosamente: " + path.getFileName();
+
+
+           /* if (dir.createNewFile()){
+                System.out.println("File created: " + dir.getName());
+            }
+                System.out.println("File already exists.");
+            return fullPath;*/
         } catch (IOException e) {
-            System.out.println("An error occurred.");
-            //e.printStackTrace();
+            e.printStackTrace();
+            return "Fallo en la carga del archivo: " + e.getMessage();
         }
     }
 }

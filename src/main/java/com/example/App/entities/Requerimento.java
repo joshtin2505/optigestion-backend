@@ -16,7 +16,7 @@ public class Requerimento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_requerimeinto;
+        private Long id_requerimeinto;
     private String titulo;
     private String descripcion;
     @ManyToOne
