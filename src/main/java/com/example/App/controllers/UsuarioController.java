@@ -4,10 +4,13 @@ import com.example.App.entities.Departamento;
 import com.example.App.entities.Rol;
 import com.example.App.entities.Usuario;
 import com.example.App.response.DeleteResult;
+import com.example.App.services.ArchivoService;
 import com.example.App.services.DepartamentoService;
 import com.example.App.services.RolService;
 import com.example.App.services.UsuarioService;
 import java.net.URI;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -36,6 +39,14 @@ public class UsuarioController {
     @Autowired
     private DepartamentoService departamentoService;
 
+    @Autowired
+    private ArchivoService archivoService;
+
+    @GetMapping("/pdftest")
+    public String hello() {
+    archivoService.scriptSubirArchivo("HolaMundo.txt");
+        return "Hello, World!";
+    }
 
     @PostMapping("/guardar")
     private ResponseEntity<Usuario> guardar (@RequestBody Usuario usuario){
