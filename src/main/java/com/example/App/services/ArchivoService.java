@@ -1,5 +1,6 @@
 package com.example.App.services;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,56 +11,48 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Service
+@Slf4j
 public class ArchivoService {
     @Value("${pathPdf}")
     private String pathPdf;
 
     public String uploadFile(String fileName, MultipartFile multipartFile) {
-        File dir = new File(pathPdf+fileName);
+        File dir = new File(pathPdf + fileName);
 
-        if(dir.exists()){
+        if (dir.exists()) {
             return "EXIST";
         }
 
-        Path path = Path.of(pathPdf+fileName);
+        Path path = Path.of(pathPdf + fileName);
 
-        try{
+        try {
             Files.copy(multipartFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             return "CREATED";
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return "FAILED";
     }
 
-    public String savePdf(/*String fileName,*/ MultipartFile file){
-        String NewName;
-            if (file.isEmpty()) {
-                return "File is empty";
-            }
+    public String savePdf(MultipartFile file) {
+        if (file.isEmpty()) {
+            return "File is empty";
+        }
         try {
-            //String fullPath = pathPdf+fileName+".pdf";
-            //System.out.println(fullPath);
-            //File dir = new File(fullPath);
-
             byte[] bytes = file.getBytes();
-
-            Path path = Paths.get(pathPdf +File.pathSeparator+ file.getOriginalFilename() );
+            String hashedFileName = UUID.randomUUID().toString();
+            Path path = Paths.get(pathPdf + hashedFileName + File.pathSeparator + file.getOriginalFilename());
             Files.write(path, bytes);
 
-            return "Archivo subido exitosamente: " + path.getFileName();
+            return path.getFileName().toString();
 
-
-           /* if (dir.createNewFile()){
-                System.out.println("File created: " + dir.getName());
-            }
-                System.out.println("File already exists.");
-            return fullPath;*/
         } catch (IOException e) {
-            e.printStackTrace();
-            return "Fallo en la carga del archivo: " + e.getMessage();
+            log.error("Error: {}", e.getMessage());
+            return "Error al subir el archivo";
         }
+
     }
 }

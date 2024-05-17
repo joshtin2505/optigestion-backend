@@ -16,7 +16,7 @@ public class Requerimento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id_requerimeinto;
+    private Long id_requerimeinto;
     private String titulo;
     private String descripcion;
     @ManyToOne
@@ -29,6 +29,9 @@ public class Requerimento {
     private String comentario_logistico;
     private String comentario_compra;
     private int opcion_elegida;
+    @OneToOne
+    @JoinColumn(name = "id_pdf")
+    private PDF pdf;
     //private int id_usuario; // <- Esto esta mal debias haber hecho una relacion con la tabla usuario no establese una simple propiedad...
     @ManyToOne
     @JoinColumn(name = "id_usuario")
