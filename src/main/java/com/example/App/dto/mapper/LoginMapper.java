@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package com.example.App.DTO.Mapper;
+package com.example.App.dto.mapper;
 
-import com.example.App.DTO.Logindto;
+import com.example.App.dto.Logindto;
 import com.example.App.entities.Login;
 import com.example.shared.mapper.EntityToDto;
 import org.mapstruct.Mapper;

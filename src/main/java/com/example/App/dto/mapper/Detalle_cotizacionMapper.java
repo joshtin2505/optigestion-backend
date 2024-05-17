@@ -1,6 +1,6 @@
-package com.example.App.DTO.mapper;
+package com.example.App.dto.mapper;
 
-import com.example.App.DTO.Detalle_cotizaciondto;
+import com.example.App.dto.Detalle_cotizaciondto;
 import com.example.App.entities.Detalle_cotizacion;
 import com.example.shared.mapper.EntityToDto;
 import org.mapstruct.Mapper;

@@ -2,10 +2,13 @@ package com.example.App.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,12 +50,25 @@ public class ArchivoService {
             Path path = Paths.get(pathPdf + hashedFileName + File.pathSeparator + file.getOriginalFilename());
             Files.write(path, bytes);
 
-            return path.getFileName().toString();
+            return path.toString();
 
         } catch (IOException e) {
             log.error("Error: {}", e.getMessage());
             return "Error al subir el archivo";
         }
 
+    }
+
+    public byte[] getPdf(String fileLocation) {
+        try {
+            Path path = Paths.get(fileLocation);
+
+            byte[] pdfBytes = Files.readAllBytes(path);
+
+            return pdfBytes;
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

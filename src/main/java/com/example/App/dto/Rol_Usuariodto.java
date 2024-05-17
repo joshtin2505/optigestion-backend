@@ -1,8 +1,5 @@
-package com.example.App.DTO;
+package com.example.App.dto;
 
-import com.example.App.entities.*;
-import java.util.List;
-import jakarta.persistence.OneToMany;
 import lombok.*;
 
 @Data

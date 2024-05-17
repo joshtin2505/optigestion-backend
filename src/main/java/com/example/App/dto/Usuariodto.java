@@ -1,6 +1,5 @@
-package com.example.App.DTO;
+package com.example.App.dto;
 
-import com.example.App.entities.*;
 import lombok.*;
 
 @Data

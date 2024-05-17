@@ -1,35 +1,34 @@
 package com.example.App.controllers;
 
+import com.example.App.dto.Cotizaciondto;
+import com.example.App.dto.RequerimientoCotizadoDTO;
 import com.example.App.entities.Estado;
 import com.example.App.entities.Requerimento;
 import com.example.App.entities.TipoRequerimiento;
 import com.example.App.entities.Usuario;
 import com.example.App.services.*;
+import com.example.app.entities.Cotizacion;
 
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/requerimentos")
 public class RequerimentoController {
-    private final RequerimentoService requerimentoService;
-    private final EstadoService estadoService;
-    private final UsuarioService usuarioService;
-    private final TipoRequerimientoService tipoRequerimientoService;
 
-    @Autowired
-    public RequerimentoController(RequerimentoService requerimentoService, EstadoService estadoService, UsuarioService usuarioService, TipoRequerimientoService tipoRequerimientoService) {
-        this.requerimentoService = requerimentoService;
-        this.estadoService = estadoService;
-        this.usuarioService = usuarioService;
-        this.tipoRequerimientoService = tipoRequerimientoService;
-    }
+    private final ArchivoService archivoService;
+    private RequerimentoService requerimentoService;
+    private EstadoService estadoService;
+    private UsuarioService usuarioService;
+    private TipoRequerimientoService tipoRequerimientoService;
+    private CotizacionService cotizacionService;
 
     // Endpoint para obtener todos los requerimentos
     @GetMapping
@@ -87,6 +86,44 @@ public class RequerimentoController {
     public ResponseEntity<Void> eliminarRequerimentoPorId(@PathVariable Long id) {
         requerimentoService.eliminarRequerimentoPorId(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/cotizados/{id}")
+    public void requerimientosCotizados(@PathVariable Long id){
+        Usuario usuario = usuarioService.findByid_Usuario(id).get();
+        List<RequerimientoCotizadoDTO> requerimentos = requerimentoService.obtenerTodosLosRequerimentos().stream().map(requerimento -> {
+            if(requerimento.getUsuario().getId_Usuario() == usuario.getId_Usuario() && requerimento.getEstado().getId() == 6){
+                List<Cotizacion> cotizaciones = cotizacionService.obtenerTodosLasCotizaciones().stream().map(cotizacion -> {
+                    if(cotizacion.getRequerimiento().getId_requerimeinto() == requerimento.getId_requerimeinto()){
+                        return cotizacion;
+                    }
+                    return null;
+                }).toList();
+                List<Cotizaciondto> cotizaciondtos = cotizaciones.stream().map(cotizacion -> {
+                    if(cotizacion != null){
+                        System.out.println("Consola: " + archivoService.getPdf(cotizacion.getPdfPath()));
+                        return new Cotizaciondto(cotizacion.getId_cotizacion(), cotizacion.getPdfPath());
+                    }
+                    return null;
+                }).toList();
+                return new RequerimientoCotizadoDTO(
+                        requerimento.getId_requerimeinto(),
+                        requerimento.getTitulo(),
+                        requerimento.getDescripcion(),
+                        requerimento.getEstado(),
+                        requerimento.getUsuario(),
+                        requerimento.getTipoRequerimiento(),
+                        cotizaciondtos,
+                        requerimento.getFecha_creacion(),
+                        requerimento.getComentaio_rector(),
+                        requerimento.getComentario_logistico(),
+                        requerimento.getComentario_compra());
+            }
+            return null;
+        }).toList();
+        // System.out.println(requerimentos);
+
+
     }
 
 }

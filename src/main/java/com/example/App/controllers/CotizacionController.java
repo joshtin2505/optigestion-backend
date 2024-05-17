@@ -45,7 +45,7 @@ public class CotizacionController {
 
 
     @PutMapping(value = "/send-cotizacion/{idRequerimiento}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public List<?> pdftest(@RequestPart("file") MultipartFile[] file, @PathVariable int idRequerimiento) {
+    public List<?> createCotization(@RequestPart("file") MultipartFile[] file, @PathVariable int idRequerimiento) {
         Optional<Requerimento> requerimento = requerimientoService.obtenerRequerimentoPorId((long) idRequerimiento);
         if (requerimento.isEmpty()) {
             return List.of("Requerimiento no encontrado");
