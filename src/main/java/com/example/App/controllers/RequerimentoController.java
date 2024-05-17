@@ -4,25 +4,16 @@ import com.example.App.entities.Estado;
 import com.example.App.entities.Requerimento;
 import com.example.App.entities.TipoRequerimiento;
 import com.example.App.entities.Usuario;
-import com.example.App.services.EstadoService;
-import com.example.App.services.RequerimentoService;
+import com.example.App.services.*;
+
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.App.services.TipoRequerimientoService;
-import com.example.App.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/requerimentos")
@@ -97,4 +88,5 @@ public class RequerimentoController {
         requerimentoService.eliminarRequerimentoPorId(id);
         return ResponseEntity.ok().build();
     }
+
 }

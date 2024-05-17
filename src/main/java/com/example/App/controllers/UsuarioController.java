@@ -4,23 +4,18 @@ import com.example.App.entities.Departamento;
 import com.example.App.entities.Rol;
 import com.example.App.entities.Usuario;
 import com.example.App.response.DeleteResult;
-import com.example.App.services.ArchivoService;
 import com.example.App.services.DepartamentoService;
 import com.example.App.services.RolService;
 import com.example.App.services.UsuarioService;
 import java.net.URI;
 
-import com.example.App.types.Cotizacion;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/usuario/")
@@ -33,16 +28,6 @@ public class UsuarioController {
 
     @Autowired
     private DepartamentoService departamentoService;
-
-    @Autowired
-    private ArchivoService archivoService;
-
-    @PostMapping(value = "/pdftest", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public List<String> pdftest(@RequestPart("file") MultipartFile[] file) {
-        System.out.println(file);
-        List<String> pdfPaths = Arrays.stream(file).map(files -> archivoService.savePdf(files)).toList();
-        return pdfPaths;
-    }
 
     @PostMapping("/guardar")
     private ResponseEntity<Usuario> guardar (@RequestBody Usuario usuario){

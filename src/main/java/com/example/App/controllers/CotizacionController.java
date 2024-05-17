@@ -6,21 +6,23 @@ package com.example.App.controllers;
 
 
 
+import com.example.App.entities.Requerimento;
+import com.example.App.services.ArchivoService;
 import com.example.App.services.CotizacionService;
+import com.example.App.services.EstadoService;
+import com.example.App.services.RequerimentoService;
 import com.example.app.entities.Cotizacion;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -29,13 +31,44 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/cotizacion")
 public class CotizacionController {
-    private final CotizacionService cotizacionService;
-    
     @Autowired
-    private CotizacionController(CotizacionService cotizacionService) {
-        this.cotizacionService = cotizacionService;
+    private CotizacionService cotizacionService;
+
+    @Autowired
+    private ArchivoService archivoService;
+
+    @Autowired
+    private RequerimentoService requerimientoService;
+
+    @Autowired
+    private EstadoService estadoService;
+
+
+    @PutMapping(value = "/send-cotizacion/{idRequerimiento}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public List<?> pdftest(@RequestPart("file") MultipartFile[] file, @PathVariable int idRequerimiento) {
+        Optional<Requerimento> requerimento = requerimientoService.obtenerRequerimentoPorId((long) idRequerimiento);
+        if (requerimento.isEmpty()) {
+            return List.of("Requerimiento no encontrado");
+        }
+        List<Cotizacion> nuevasCotizaciones = Arrays.stream(file).map(files -> {
+            Cotizacion cotizacion = new Cotizacion();
+
+            String pdfPath =  archivoService.savePdf(files);
+
+            cotizacion.setPdfPath(pdfPath);
+            cotizacion.setRequerimiento(requerimento.get());
+            Cotizacion nuevaCotizacion = cotizacionService.create(cotizacion);
+
+            Requerimento requerimentoActualizado = requerimento.get();
+            requerimentoActualizado.setEstado(estadoService.obtenerEstadoPorId(6L).get());
+            requerimientoService.actualizarRequerimento(requerimento.get().getId_requerimeinto(), requerimentoActualizado );
+            return nuevaCotizacion;
+        }).toList();
+        System.out.println(nuevasCotizaciones);
+        return nuevasCotizaciones;
     }
-    
+
+
     // Endpoint para obtener todos las cotizaciones
     @GetMapping
     private ResponseEntity<List<Cotizacion>> obtenerTodosLasCotizaciones() {

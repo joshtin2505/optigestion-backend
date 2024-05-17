@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,9 +28,6 @@ public class Requerimento {
     private String comentario_logistico;
     private String comentario_compra;
     private int opcion_elegida;
-    @OneToOne
-    @JoinColumn(name = "id_pdf")
-    private PDF pdf;
     //private int id_usuario; // <- Esto esta mal debias haber hecho una relacion con la tabla usuario no establese una simple propiedad...
     @ManyToOne
     @JoinColumn(name = "id_usuario")
