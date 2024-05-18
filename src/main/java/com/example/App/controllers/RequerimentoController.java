@@ -2,6 +2,7 @@ package com.example.App.controllers;
 
 import com.example.App.dto.Cotizaciondto;
 import com.example.App.dto.RequerimientoCotizadoDTO;
+import com.example.App.dto.RequerimientoParaComprarDTO;
 import com.example.App.entities.Estado;
 import com.example.App.entities.Requerimento;
 import com.example.App.entities.TipoRequerimiento;
@@ -12,8 +13,10 @@ import com.example.app.entities.Cotizacion;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -89,41 +92,87 @@ public class RequerimentoController {
     }
 
     @GetMapping("/cotizados/{id}")
-    public void requerimientosCotizados(@PathVariable Long id){
+    public List<RequerimientoCotizadoDTO> requerimientosCotizados(@PathVariable Long id) {
+
         Usuario usuario = usuarioService.findByid_Usuario(id).get();
-        List<RequerimientoCotizadoDTO> requerimentos = requerimentoService.obtenerTodosLosRequerimentos().stream().map(requerimento -> {
-            if(requerimento.getUsuario().getId_Usuario() == usuario.getId_Usuario() && requerimento.getEstado().getId() == 6){
-                List<Cotizacion> cotizaciones = cotizacionService.obtenerTodosLasCotizaciones().stream().map(cotizacion -> {
-                    if(cotizacion.getRequerimiento().getId_requerimeinto() == requerimento.getId_requerimeinto()){
-                        return cotizacion;
-                    }
-                    return null;
-                }).toList();
-                List<Cotizaciondto> cotizaciondtos = cotizaciones.stream().map(cotizacion -> {
-                    if(cotizacion != null){
-                        System.out.println("Consola: " + archivoService.getPdf(cotizacion.getPdfPath()));
-                        return new Cotizaciondto(cotizacion.getId_cotizacion(), cotizacion.getPdfPath());
-                    }
-                    return null;
-                }).toList();
-                return new RequerimientoCotizadoDTO(
-                        requerimento.getId_requerimeinto(),
-                        requerimento.getTitulo(),
-                        requerimento.getDescripcion(),
-                        requerimento.getEstado(),
-                        requerimento.getUsuario(),
-                        requerimento.getTipoRequerimiento(),
-                        cotizaciondtos,
-                        requerimento.getFecha_creacion(),
-                        requerimento.getComentaio_rector(),
-                        requerimento.getComentario_logistico(),
-                        requerimento.getComentario_compra());
-            }
-            return null;
-        }).toList();
-        // System.out.println(requerimentos);
 
+        List<RequerimientoCotizadoDTO> requerimentos = requerimentoService.obtenerTodosLosRequerimentos()
+                .stream()
+                .filter(requerimento -> requerimento.getUsuario().getId_Usuario() == usuario.getId_Usuario() && requerimento.getEstado().getId() == 6)
+                .map(requerimento -> {
 
+                    List<Cotizacion> cotizaciones = cotizacionService.obtenerTodosLasCotizaciones().stream()
+                            .filter(cotizacion -> cotizacion.getRequerimiento().getId_requerimeinto() == requerimento.getId_requerimeinto())
+                            .collect(Collectors.toList());
+
+                   /* List<Cotizaciondto> cotizaciondtos = cotizaciones.stream().map(cotizacion -> {
+                        if (cotizacion != null) {
+                            System.out.println("Consola: " + archivoService.getPdf(cotizacion.getPdfPath()));
+                            return new Cotizaciondto(cotizacion.getId_cotizacion(), cotizacion.getPdfPath());
+                        }
+                        return null;
+                    }).toList();*/
+                    List<?> pdfs = cotizaciones.stream()
+                            .map(cotizacion -> {
+                                if (cotizacion != null) {
+                                    List<?> pdf = archivoService.getPdf(cotizacion.getPdfPath());
+                                    return pdf;
+                                }
+                                return null;
+                            }).toList();
+
+                    return new RequerimientoCotizadoDTO(
+                            requerimento.getId_requerimeinto(),
+                            requerimento.getTitulo(),
+                            requerimento.getDescripcion(),
+                            requerimento.getEstado(),
+                            requerimento.getUsuario(),
+                            requerimento.getTipoRequerimiento(),
+                            pdfs,
+                            requerimento.getFecha_creacion(),
+                            requerimento.getComentaio_rector(),
+                            requerimento.getComentario_logistico(),
+                            requerimento.getComentario_compra());
+                }).toList();
+        return requerimentos;
+    }
+
+    @GetMapping("/comprar")
+    public List<RequerimientoParaComprarDTO> requerimientosParaComprar() {
+
+        List<RequerimientoParaComprarDTO> requerimentos = requerimentoService.obtenerTodosLosRequerimentos()
+                .stream()
+                .filter(requerimento -> requerimento.getEstado().getId() == 7)
+                .map(requerimento -> {
+
+                    List<Cotizacion> cotizaciones = cotizacionService.obtenerTodosLasCotizaciones().stream()
+                            .filter(cotizacion -> cotizacion.getRequerimiento().getId_requerimeinto() == requerimento.getId_requerimeinto())
+                            .collect(Collectors.toList());
+
+                    List<?> pdfs = cotizaciones.stream()
+                            .map(cotizacion -> {
+                                if (cotizacion != null) {
+                                    List<?> pdf = archivoService.getPdf(cotizacion.getPdfPath());
+                                    return pdf;
+                                }
+                                return null;
+                            }).toList();
+
+                    return new RequerimientoParaComprarDTO(
+                            requerimento.getId_requerimeinto(),
+                            requerimento.getTitulo(),
+                            requerimento.getDescripcion(),
+                            requerimento.getEstado(),
+                            requerimento.getUsuario(),
+                            requerimento.getTipoRequerimiento(),
+                            pdfs,
+                            requerimento.getFecha_creacion(),
+                            requerimento.getComentaio_rector(),
+                            requerimento.getComentario_logistico(),
+                            requerimento.getComentario_compra(),
+                            requerimento.getOpcion_elegida());
+                }).toList();
+        return requerimentos;
     }
 
 }

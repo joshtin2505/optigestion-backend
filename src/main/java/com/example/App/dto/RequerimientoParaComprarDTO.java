@@ -6,7 +6,6 @@ import com.example.App.entities.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.core.io.InputStreamResource;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,8 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequerimientoCotizadoDTO {
-
+public class RequerimientoParaComprarDTO {
     private Long id_requerimeinto;
     private String titulo;
     private String descripcion;
@@ -27,4 +25,5 @@ public class RequerimientoCotizadoDTO {
     private String comentaio_rector;
     private String comentario_logistico;
     private String comentario_compra;
+    private int opcion_elegida;
 }

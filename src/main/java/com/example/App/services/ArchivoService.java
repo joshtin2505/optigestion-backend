@@ -9,11 +9,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Base64;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -59,16 +62,18 @@ public class ArchivoService {
 
     }
 
-    public byte[] getPdf(String fileLocation) {
-        try {
+    public List<?> getPdf(String fileLocation) {
+        String[] fileLocationSlice = fileLocation.split(";");
+       try {
             Path path = Paths.get(fileLocation);
 
             byte[] pdfBytes = Files.readAllBytes(path);
-
-            return pdfBytes;
+           String base64Pdf = Base64.getEncoder().encodeToString(pdfBytes);
+            return List.of(base64Pdf, fileLocationSlice[1]);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
 }
